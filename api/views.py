@@ -3,6 +3,9 @@ from .models import Student
 from .serializers import StudentSerializier
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse, JsonResponse
+import io
+from rest_framework.parsers import JSONParser
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def home(request):
@@ -24,3 +27,18 @@ def student_info(request):
     serializer = StudentSerializier(stu, many = True) #convert into python data
     return JsonResponse(serializer.data, safe = False) # safe = False becoz all data is not dict format
     
+# Post Method by using Desirializer  with third party App ------------
+
+@csrf_exempt
+def student_deserializer(request):
+    if request.method == 'POST':
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        pythondata = JSONParser().parse(stream)
+        serializer = StudentSerializier(data=pythondata)
+        if serializer.is_valid():
+            serializer.save()
+            res = {'msg' : 'Data Created...'}
+            return JsonResponse(res)
+        else:
+            return JsonResponse(serializer.errors)
