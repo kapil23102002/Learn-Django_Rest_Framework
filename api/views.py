@@ -22,5 +22,5 @@ def student_details(request, pk):
 def student_info(request):
     stu = Student.objects.all()# get all data from model object
     serializer = StudentSerializier(stu, many = True) #convert into python data
-    return JsonResponse(serializer.data)
+    return JsonResponse(serializer.data, safe = False) # safe = False becoz all data is not dict format
     
