@@ -59,3 +59,15 @@ def student_deserializer(request):
             return JsonResponse(res)
         else:
             return JsonResponse(serializer.errors)
+        
+    # Delete Method with third party App------------------
+    if request.method == 'DELETE':
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        pythondata = JSONParser().parse(stream)
+        id = pythondata.get('id')
+        stu = Student.objects.get(id=id)
+        stu.delete()
+        res = {'msg' : 'Data Delete...'}
+        return JsonResponse(res)
+    return JsonResponse(serializer.errors)
