@@ -7,8 +7,8 @@ URL = "http://127.0.0.1:8000/api/student_deserializer/"
 def post_data():
     data = {
     'name' : 'Rohit',
-        'roll' : 105, 
-        'city' : 'Ganga Nagar'}
+    'roll' : 205, 
+    'city' : 'Ashok Nagar'}
     
 
 
@@ -18,7 +18,7 @@ def post_data():
 
     data = r.json()
     print(data)
-# post_data() # render this post function
+post_data() # render this post function
 
 # for Update METHOD------------
 
@@ -48,4 +48,4 @@ def delete_data():
 
     data = r.json()
     print(data)
-delete_data() # render this Delete function
+# delete_data() # render this Delete function
