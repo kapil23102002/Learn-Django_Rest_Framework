@@ -27,10 +27,12 @@ def student_info(request):
     serializer = StudentSerializier(stu, many = True) #convert into python data
     return JsonResponse(serializer.data, safe = False) # safe = False becoz all data is not dict format
     
-# Post Method by using Desirializer  with third party App ------------
+# CRUD Method by using Desirializer  with third party App ------------
 
 @csrf_exempt
 def student_deserializer(request):
+    
+    # Create Method with third party App------------------
     if request.method == 'POST':
         json_data = request.body
         stream = io.BytesIO(json_data)
@@ -39,6 +41,21 @@ def student_deserializer(request):
         if serializer.is_valid():
             serializer.save()
             res = {'msg' : 'Data Created...'}
+            return JsonResponse(res)
+        else:
+            return JsonResponse(serializer.errors)
+
+    # Update Method with third party App------------------
+    if request.method == 'PUT':
+        json_data = request.body
+        stream = io.BytesIO(json_data)
+        pythondata = JSONParser().parse(stream)
+        id = pythondata.get('id')
+        stu = Student.objects.get(id=id)
+        serializer = StudentSerializier(stu, data=pythondata, partial = True) # for partially update
+        if serializer.is_valid():
+            serializer.save()
+            res = {'msg' : 'Data Updated...'}
             return JsonResponse(res)
         else:
             return JsonResponse(serializer.errors)
