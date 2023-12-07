@@ -7,8 +7,8 @@ URL = "http://127.0.0.1:8000/api/student_deserializer/"
 def post_data():
     data = {
     'name' : 'kaka',
-    'roll' : 15, 
-    'city' : 'Kak',
+    'roll' : 167, 
+    'city' : 'Kaka',
     }
  
     json_data = json.dumps(data)
